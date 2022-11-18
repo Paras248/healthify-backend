@@ -86,3 +86,11 @@ model Records {
   patient     Patient  @relation(fields: [patientId], references: [id])
   patientId   String
 }
+
+// a seprate user 
+model Admin {
+  email     String @id
+  password  String
+  name      String
+  contactNo BigInt
+}

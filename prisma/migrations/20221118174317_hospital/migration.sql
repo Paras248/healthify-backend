@@ -72,6 +72,16 @@ CREATE TABLE "Records" (
     CONSTRAINT "Records_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Admin" (
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "contactNo" BIGINT NOT NULL,
+
+    CONSTRAINT "Admin_pkey" PRIMARY KEY ("email")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Patient_email_key" ON "Patient"("email");
 
