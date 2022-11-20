@@ -12,16 +12,16 @@ datasource db {
 
 // patient -> checkedBy <- Doctor --many to many 
 model Patient {
-  id          String      @id @default(uuid())
+  id          String      @id
   name        String
-  email       String      @unique
+  email       String
   password    String
   contactNo   BigInt[]
   dateOfBirth DateTime
   age         Int
   gender      String
   address     String
-  isAlive     Boolean
+  isAlive     Boolean     @default(true)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now())
   CheckedBy   CheckedBy[]
@@ -30,9 +30,9 @@ model Patient {
 }
 
 model Doctor {
-  id            String      @id @default(uuid())
+  id            String      @id
   name          String
-  email         String
+  email         String      @unique
   password      String
   contactNo     BigInt[]
   qualification String
@@ -55,9 +55,9 @@ model CheckedBy {
 
 // Patient -> visits <- Hospital -- many to many
 model Hospital {
-  id        String   @id @default(uuid())
+  id        String   @id
   name      String
-  email     String
+  email     String   @unique
   password  String
   address   String
   contactNo BigInt[]
@@ -78,7 +78,7 @@ model Visits {
 
 // patient has records -- one to many
 model Records {
-  id          String   @id @default(uuid())
+  id          String   @id @default(cuid())
   medicines   String[]
   disease     String
   description String
@@ -89,7 +89,8 @@ model Records {
 
 // a seprate user 
 model Admin {
-  email     String @id
+  id        String @id
+  email     String @unique
   password  String
   name      String
   contactNo BigInt

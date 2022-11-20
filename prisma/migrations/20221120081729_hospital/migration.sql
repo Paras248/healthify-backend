@@ -9,7 +9,7 @@ CREATE TABLE "Patient" (
     "age" INTEGER NOT NULL,
     "gender" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "isAlive" BOOLEAN NOT NULL,
+    "isAlive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -74,22 +74,29 @@ CREATE TABLE "Records" (
 
 -- CreateTable
 CREATE TABLE "Admin" (
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "contactNo" BIGINT NOT NULL,
 
-    CONSTRAINT "Admin_pkey" PRIMARY KEY ("email")
+    CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Patient_email_key" ON "Patient"("email");
+CREATE UNIQUE INDEX "Doctor_email_key" ON "Doctor"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "CheckedBy_patientId_doctorId_key" ON "CheckedBy"("patientId", "doctorId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Hospital_email_key" ON "Hospital"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Visits_patientId_hospitalId_key" ON "Visits"("patientId", "hospitalId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 
 -- AddForeignKey
 ALTER TABLE "CheckedBy" ADD CONSTRAINT "CheckedBy_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
