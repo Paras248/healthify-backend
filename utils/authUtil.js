@@ -12,6 +12,6 @@ exports.comparePassword = async (password, storedPassword) => {
 };
 
 exports.getJwtToken = async (id) => {
-    const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    const token = await jwt.sign({ id }, process.env.JWT_SECRET);
     return token;
 };

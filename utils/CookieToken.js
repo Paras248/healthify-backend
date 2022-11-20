@@ -8,6 +8,8 @@ const CookieToken = async (user, res) => {
         httpOnly: true,
     };
 
+    user.password = undefined;
+
     res.cookie("healthifyToken", token, options).status(200).json({
         success: true,
         token,
