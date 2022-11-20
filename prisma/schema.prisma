@@ -16,7 +16,7 @@ model Patient {
   name        String
   email       String
   password    String
-  contactNo   BigInt[]
+  contactNo   String[]
   dateOfBirth DateTime
   age         Int
   gender      String
@@ -27,6 +27,8 @@ model Patient {
   CheckedBy   CheckedBy[]
   Visit       Visits[]
   Records     Records[]
+
+  @@unique([name, email, contactNo])
 }
 
 model Doctor {

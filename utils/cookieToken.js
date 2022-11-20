@@ -1,6 +1,6 @@
 const { getJwtToken } = require("./authUtil");
 
-const CookieToken = async (user, res) => {
+const cookieToken = async (user, res) => {
     const token = await getJwtToken(user.id);
 
     const options = {
@@ -10,11 +10,11 @@ const CookieToken = async (user, res) => {
 
     user.password = undefined;
 
-    res.cookie("healthifyToken", token, options).status(200).json({
+    res.cookie("healthifyToken", token, options).json({
         success: true,
         token,
         user,
     });
 };
 
-module.exports = CookieToken;
+module.exports = cookieToken;

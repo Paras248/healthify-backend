@@ -4,7 +4,7 @@ CREATE TABLE "Patient" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "contactNo" BIGINT[],
+    "contactNo" TEXT[],
     "dateOfBirth" TIMESTAMP(3) NOT NULL,
     "age" INTEGER NOT NULL,
     "gender" TEXT NOT NULL,
@@ -82,6 +82,9 @@ CREATE TABLE "Admin" (
 
     CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Patient_name_email_contactNo_key" ON "Patient"("name", "email", "contactNo");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Doctor_email_key" ON "Doctor"("email");

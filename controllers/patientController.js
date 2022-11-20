@@ -1,6 +1,7 @@
 const BigPromise = require("../middlewares/BigPromise");
 const { PrismaClient } = require("@prisma/client");
-const { hashPassword } = require("../utils/authUtil");
+const { hashPassword, comparePassword } = require("../utils/authUtil");
+const cookieToken = require("../utils/cookieToken");
 
 const prisma = new PrismaClient();
 
@@ -16,4 +17,30 @@ exports.patientSignIn = BigPromise(async (req, res, next) => {
             })
         );
     }
+
+    const patient = await prisma.patient.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+    if (!patient) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "No user found! Please provide a correct id",
+            })
+        );
+    }
+    // const hashedPassword = await hashPassword(password);
+    const isValidPassword = await comparePassword(password, patient.password);
+    if (!isValidPassword) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Incorrect password",
+            })
+        );
+    }
+
+    cookieToken(patient, res);
 });
