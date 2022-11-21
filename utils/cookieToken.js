@@ -16,8 +16,9 @@ const cookieToken = async (user, res, userType) => {
         tokenName = "doctorToken";
     } else if (userType === "hospital") {
         tokenName = "hospitalToken";
+    } else if (userType === "admin") {
+        tokenName = "adminToken";
     }
-
     res.cookie(tokenName, token, options).json({
         success: true,
         token,

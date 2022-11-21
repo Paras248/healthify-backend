@@ -173,7 +173,7 @@ exports.adminHospitalSignUp = BigPromise(async (req, res, next) => {
 
 exports.adminSignup = BigPromise(async (req, res, next) => {
     let { email, name, password, contactNo } = req.body;
-    if (!email || !name || !password || contactNo) {
+    if (!email || !name || !password || !contactNo) {
         return next(
             res.status(400).json({
                 success: false,
@@ -209,4 +209,45 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
             })
         );
     }
+});
+
+exports.adminSignIn = BigPromise(async (req, res, next) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "All fields are required",
+            })
+        );
+    }
+
+    const admin = await prisma.admin.findUnique({
+        where: {
+            email: email,
+        },
+    });
+
+    if (!admin) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Incorrect email",
+            })
+        );
+    }
+
+    const isValidPassword = await comparePassword(password, admin.password);
+
+    if (!isValidPassword) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Incorrect password",
+            })
+        );
+    }
+
+    cookieToken(admin, res, "admin");
 });
