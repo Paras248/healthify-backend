@@ -12,7 +12,7 @@ datasource db {
 
 // patient -> checkedBy <- Doctor --many to many 
 model Patient {
-  id          String      @id
+  id          String    @id
   name        String
   email       String
   password    String
@@ -21,74 +21,56 @@ model Patient {
   age         Int
   gender      String
   address     String
-  isAlive     Boolean     @default(true)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now())
-  CheckedBy   CheckedBy[]
-  Visit       Visits[]
+  isAlive     Boolean   @default(true)
   Records     Records[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
 
   @@unique([name, email, contactNo])
 }
 
 model Doctor {
-  id            String      @id
+  id            String    @id
   name          String
-  email         String      @unique
+  email         String    @unique
   password      String
   contactNo     String[]
   qualification String
   address       String
   gender        String
   age           Int
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now())
-  CheckedBy     CheckedBy[]
-}
-
-model CheckedBy {
-  patient   Patient  @relation(fields: [patientId], references: [id])
-  patientId String
-  doctor    Doctor   @relation(fields: [doctorId], references: [id])
-  doctorId  String
-  checkedAt DateTime @default(now())
-
-  @@unique([patientId, doctorId, checkedAt])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now())
+  Records       Records[]
 }
 
 // Patient -> visits <- Hospital -- many to many
 model Hospital {
-  id        String   @id
+  id        String    @id
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
   address   String
   contactNo String[]
   type      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  Visits    Visits[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  Records   Records[]
 }
 
-model Visits {
-  patient    Patient  @relation(fields: [patientId], references: [id])
-  patientId  String
-  hospital   Hospital @relation(fields: [hospitalId], references: [id])
-  hospitalId String
-  visitedAt  DateTime @default(now())
-
-  @@unique([patientId, hospitalId, visitedAt])
-}
-
-// patient has records -- one to many
+// patient has records -- one to many, hospital has records
 model Records {
   id          String   @id @default(cuid())
   medicines   String[]
   disease     String
   description String
-  createdAt   DateTime @default(now())
   patient     Patient  @relation(fields: [patientId], references: [id])
+  doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  doctorId    String
+  hospital    Hospital @relation(fields: [hospitalId], references: [id])
+  hospitalId  String
   patientId   String
+  createdAt   DateTime @default(now())
 }
 
 // a seprate user 

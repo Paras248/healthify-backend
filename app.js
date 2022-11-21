@@ -6,6 +6,8 @@ const app = express();
 
 const admin = require("./routes/admin");
 const patient = require("./routes/patient");
+const doctor = require("./routes/doctor");
+const hospital = require("./routes/hospital");
 
 app.use(cors());
 app.use(express.json());
@@ -14,5 +16,7 @@ app.use(cookieParser());
 
 app.use("/api", patient);
 app.use("/api", admin);
+app.use("/api", doctor);
+app.use("/api", hospital);
 
 module.exports = app;

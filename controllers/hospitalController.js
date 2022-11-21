@@ -5,7 +5,7 @@ const cookieToken = require("../utils/cookieToken");
 
 const prisma = new PrismaClient();
 
-exports.doctorSignIn = BigPromise(async (req, res, next) => {
+exports.hospitalSignIn = BigPromise(async (req, res, next) => {
     const { userId, password } = req.body;
 
     if (!userId || !password) {
@@ -17,13 +17,13 @@ exports.doctorSignIn = BigPromise(async (req, res, next) => {
         );
     }
 
-    const doctor = await prisma.doctor.findUnique({
+    const hospital = await prisma.hospital.findUnique({
         where: {
             id: userId,
         },
     });
 
-    if (!doctor) {
+    if (!hospital) {
         return next(
             res.status(400).json({
                 success: false,
@@ -32,7 +32,7 @@ exports.doctorSignIn = BigPromise(async (req, res, next) => {
         );
     }
 
-    const isValidPassword = await comparePassword(password, doctor.password);
+    const isValidPassword = await comparePassword(password, hospital.password);
 
     if (!isValidPassword) {
         return next(
@@ -43,5 +43,5 @@ exports.doctorSignIn = BigPromise(async (req, res, next) => {
         );
     }
 
-    cookieToken(doctor, res, "doctor");
+    cookieToken(hospital, res, "hospital");
 });
