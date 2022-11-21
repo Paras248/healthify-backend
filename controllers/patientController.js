@@ -56,7 +56,13 @@ exports.patientGetDetails = BigPromise(async (req, res, next) => {
 
     const patient = await prisma.patient.findUnique({
         include: {
-            records: {},
+            records: {
+                orderBy: [
+                    {
+                        createdAt: "desc",
+                    },
+                ],
+            },
         },
         where: {
             id: patientId,
