@@ -204,6 +204,7 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
             admin,
         });
     } catch (err) {
+        console.log(err);
         return next(
             res.status(400).json({
                 success: false,
