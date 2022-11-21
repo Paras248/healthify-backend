@@ -1,10 +1,11 @@
-const jwt = require("jsonwebtoken");
-const prisma = require("../utils/prismaClient");
 const BigPromise = require("./BigPromise");
+const { PrismaClient } = require("@prisma/client");
+const jwt = require("jsonwebtoken");
 
-const isAdminLoggedIn = BigPromise(async (req, res, next) => {
+const isPatientLoggedIn = BigPromise(async (req, res, next) => {
+    const prisma = new PrismaClient();
     const token =
-        req.cookies.adminToken ||
+        req.cookies.patientToken ||
         req.headers["Authorization"] ||
         req.headers["authorization"];
 
@@ -33,7 +34,7 @@ const isAdminLoggedIn = BigPromise(async (req, res, next) => {
         }
     );
 
-    req.admin = await prisma.admin.findUnique({
+    req.patient = await prisma.patient.findUnique({
         where: {
             id: decoded.id,
         },
@@ -42,4 +43,4 @@ const isAdminLoggedIn = BigPromise(async (req, res, next) => {
     next();
 });
 
-module.exports = isAdminLoggedIn;
+module.exports = isPatientLoggedIn;

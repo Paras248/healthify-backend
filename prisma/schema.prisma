@@ -22,7 +22,7 @@ model Patient {
   gender      String
   address     String
   isAlive     Boolean   @default(true)
-  Records     Records[]
+  records     Records[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
 
@@ -41,7 +41,7 @@ model Doctor {
   age           Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now())
-  Records       Records[]
+  records       Records[]
 }
 
 // Patient -> visits <- Hospital -- many to many
@@ -55,7 +55,7 @@ model Hospital {
   type      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-  Records   Records[]
+  records   Records[]
 }
 
 // patient has records -- one to many, hospital has records
@@ -64,13 +64,13 @@ model Records {
   medicines   String[]
   disease     String
   description String
-  patient     Patient  @relation(fields: [patientId], references: [id])
-  doctor      Doctor   @relation(fields: [doctorId], references: [id])
   doctorId    String
-  hospital    Hospital @relation(fields: [hospitalId], references: [id])
   hospitalId  String
   patientId   String
   createdAt   DateTime @default(now())
+  patient     Patient  @relation(fields: [patientId], references: [id])
+  doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  hospital    Hospital @relation(fields: [hospitalId], references: [id])
 }
 
 // a seprate user 
