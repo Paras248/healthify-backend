@@ -207,7 +207,7 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
         return next(
             res.status(400).json({
                 success: false,
-                message: "Hospital already exists",
+                message: "Admin already exists",
             })
         );
     }
