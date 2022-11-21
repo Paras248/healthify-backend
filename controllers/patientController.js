@@ -31,7 +31,6 @@ exports.patientSignIn = BigPromise(async (req, res, next) => {
             })
         );
     }
-    // const hashedPassword = await hashPassword(password);
     const isValidPassword = await comparePassword(password, patient.password);
     if (!isValidPassword) {
         return next(

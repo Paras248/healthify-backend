@@ -22,7 +22,7 @@ CREATE TABLE "Doctor" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "contactNo" BIGINT[],
+    "contactNo" TEXT[],
     "qualification" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE "Hospital" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "contactNo" BIGINT[],
+    "contactNo" TEXT[],
     "type" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -78,7 +78,7 @@ CREATE TABLE "Admin" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "contactNo" BIGINT NOT NULL,
+    "contactNo" TEXT[],
 
     CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
 );

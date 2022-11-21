@@ -36,7 +36,7 @@ model Doctor {
   name          String
   email         String      @unique
   password      String
-  contactNo     BigInt[]
+  contactNo     String[]
   qualification String
   address       String
   gender        String
@@ -62,7 +62,7 @@ model Hospital {
   email     String   @unique
   password  String
   address   String
-  contactNo BigInt[]
+  contactNo String[]
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -91,9 +91,9 @@ model Records {
 
 // a seprate user 
 model Admin {
-  id        String @id
-  email     String @unique
+  id        String   @id
+  email     String   @unique
   password  String
   name      String
-  contactNo BigInt
+  contactNo String[]
 }

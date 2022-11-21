@@ -1,10 +1,9 @@
 const BigPromise = require("../middlewares/BigPromise");
 const { hashPassword } = require("../utils/authUtil");
-const generateUniqueId = require("generate-unique-id");
-// const prisma = require("../utils/prismaClient");
 const cookieToken = require("../utils/cookieToken");
 const { PrismaClient } = require("@prisma/client");
-
+const changeLetterCase = require("../utils/changeLetterCase");
+const checkAndGenerateId = require("../utils/checkAndGenerateId");
 const prisma = new PrismaClient();
 
 exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
@@ -30,37 +29,15 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
         );
     }
 
-    const namedArray = await name.split(" ");
-    for (let i = 0; i < namedArray.length; i++) {
-        const changedCaseName =
-            namedArray[i].charAt(0).toUpperCase() + namedArray[i].slice(1);
-        namedArray[i] = changedCaseName;
-    }
-    name = namedArray.join(" ");
+    let uniqueId = await checkAndGenerateId(prisma);
 
-    let uniqueId;
-
-    while (true) {
-        const generatedId = generateUniqueId({
-            length: 12,
-            useLetters: false,
-        });
-        const patient = await prisma.patient.findUnique({
-            where: {
-                id: generatedId,
-            },
-        });
-        if (!patient) {
-            uniqueId = generatedId;
-            break;
-        }
-    }
+    name = changeLetterCase(name);
 
     const hashedPassword = await hashPassword(password);
     try {
         const patient = await prisma.patient.create({
             data: {
-                id: uniqueId,
+                id: `P${uniqueId}`,
                 name,
                 email,
                 password: hashedPassword,
@@ -82,7 +59,113 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
         return next(
             res.status(400).json({
                 success: false,
-                message: "User already exists",
+                message: "Patient already exists",
+            })
+        );
+    }
+});
+
+exports.adminDoctorSignUp = BigPromise(async (req, res, next) => {
+    let { name, email, password, contactNo, qualification, address, gender, age } =
+        req.body;
+
+    if (
+        !name ||
+        !email ||
+        !password ||
+        !contactNo ||
+        !qualification ||
+        !age ||
+        !gender ||
+        !address
+    ) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Please fields are required",
+            })
+        );
+    }
+
+    name = changeLetterCase(name);
+
+    let uniqueId = await checkAndGenerateId(prisma);
+
+    const hashedPassword = await hashPassword(password);
+
+    try {
+        const doctor = await prisma.doctor.create({
+            data: {
+                id: `D${uniqueId}`,
+                name,
+                email,
+                password: hashedPassword,
+                contactNo,
+                qualification,
+                address,
+                gender,
+                age,
+            },
+        });
+
+        doctor.password = undefined;
+
+        res.status(200).json({
+            success: true,
+            doctor,
+        });
+    } catch (err) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Doctor already exists",
+            })
+        );
+    }
+});
+
+exports.adminHospitalSignUp = BigPromise(async (req, res, next) => {
+    let { name, email, password, contactNo, type, address } = req.body;
+
+    if (!name || !email || !password || !contactNo || !address || !type) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Please fields are required",
+            })
+        );
+    }
+
+    name = changeLetterCase(name);
+
+    let uniqueId = await checkAndGenerateId(prisma);
+
+    const hashedPassword = await hashPassword(password);
+
+    try {
+        const hospital = await prisma.hospital.create({
+            data: {
+                id: `H${uniqueId}`,
+                name,
+                email,
+                password: hashedPassword,
+                contactNo,
+                address,
+                type,
+            },
+        });
+
+        hospital.password = undefined;
+
+        res.status(200).json({
+            success: true,
+            hospital,
+        });
+    } catch (err) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Hospital already exists",
             })
         );
     }
