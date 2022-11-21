@@ -3,7 +3,7 @@ const prisma = require("../utils/prismaClient");
 
 const isAdminLoggedIn = async (req, res, next) => {
     const token =
-        req.cookie.healthifyToken || req.header("Authorization").replace("Bearer ", "");
+        req.cookie.adminToken || req.header("Authorization").replace("Bearer ", "");
 
     if (!token) {
         return next(

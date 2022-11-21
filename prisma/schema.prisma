@@ -47,12 +47,13 @@ model Doctor {
 }
 
 model CheckedBy {
-  patient   Patient @relation(fields: [patientId], references: [id])
+  patient   Patient  @relation(fields: [patientId], references: [id])
   patientId String
-  doctor    Doctor  @relation(fields: [doctorId], references: [id])
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
   doctorId  String
+  checkedAt DateTime @default(now())
 
-  @@unique([patientId, doctorId])
+  @@unique([patientId, doctorId, checkedAt])
 }
 
 // Patient -> visits <- Hospital -- many to many
@@ -74,8 +75,9 @@ model Visits {
   patientId  String
   hospital   Hospital @relation(fields: [hospitalId], references: [id])
   hospitalId String
+  visitedAt  DateTime @default(now())
 
-  @@unique([patientId, hospitalId])
+  @@unique([patientId, hospitalId, visitedAt])
 }
 
 // patient has records -- one to many
@@ -91,7 +93,7 @@ model Records {
 
 // a seprate user 
 model Admin {
-  id        String   @id
+  id        String   @id @default(cuid())
   email     String   @unique
   password  String
   name      String

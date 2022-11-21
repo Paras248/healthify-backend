@@ -170,3 +170,43 @@ exports.adminHospitalSignUp = BigPromise(async (req, res, next) => {
         );
     }
 });
+
+exports.adminSignup = BigPromise(async (req, res, next) => {
+    let { email, name, password, contactNo } = req.body;
+    if (!email || !name || !password || contactNo) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "All fields are required",
+            })
+        );
+    }
+
+    name = changeLetterCase(name);
+    const hashedPassword = await hashPassword(password);
+
+    try {
+        const admin = await prisma.admin.create({
+            data: {
+                email,
+                name,
+                password: hashedPassword,
+                contactNo,
+            },
+        });
+
+        admin.password = undefined;
+
+        res.status(200).json({
+            success: true,
+            admin,
+        });
+    } catch (err) {
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Hospital already exists",
+            })
+        );
+    }
+});

@@ -1,6 +1,6 @@
 const BigPromise = require("../middlewares/BigPromise");
 const { PrismaClient } = require("@prisma/client");
-const { hashPassword, comparePassword } = require("../utils/authUtil");
+const { comparePassword } = require("../utils/authUtil");
 const cookieToken = require("../utils/cookieToken");
 
 const prisma = new PrismaClient();
@@ -41,5 +41,5 @@ exports.patientSignIn = BigPromise(async (req, res, next) => {
         );
     }
 
-    cookieToken(patient, res);
+    cookieToken(patient, res, "patient");
 });
