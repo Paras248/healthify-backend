@@ -1,12 +1,8 @@
-const changeLetterCase = (name) => {
-    const namedArray = name.split(" ");
-    for (let i = 0; i < namedArray.length; i++) {
-        const changedCaseName =
-            namedArray[i].charAt(0).toUpperCase() + namedArray[i].slice(1);
-        namedArray[i] = changedCaseName;
-    }
-    name = namedArray.join(" ");
-    return name;
+const changeLetterCase = (firstName, middleName, lastName) => {
+    firstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+    middleName = middleName.charAt(0).toUpperCase() + middleName.slice(1);
+    lastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+    return { firstName, middleName, lastName };
 };
 
 module.exports = changeLetterCase;

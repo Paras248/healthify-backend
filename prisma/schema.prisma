@@ -50,18 +50,16 @@ model Doctor {
 
 // Patient -> visits <- Hospital -- many to many
 model Hospital {
-  id         String    @id
-  firstName  String
-  middleName String
-  lastName   String
-  email      String    @unique
-  password   String
-  address    String
-  contactNo  String[]
-  type       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @default(now())
-  records    Records[]
+  id        String    @id
+  name      String
+  email     String    @unique
+  password  String
+  address   String
+  contactNo String[]
+  type      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  records   Records[]
 }
 
 // patient has records -- one to many, hospital has records

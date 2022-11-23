@@ -40,9 +40,7 @@ CREATE TABLE "Doctor" (
 -- CreateTable
 CREATE TABLE "Hospital" (
     "id" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "middleName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,

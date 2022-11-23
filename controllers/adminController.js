@@ -9,11 +9,24 @@ const { comparePassword } = require("../utils/authUtil");
 const prisma = new PrismaClient();
 
 exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
-    let { name, email, password, contactNo, dateOfBirth, age, gender, address, isAlive } =
-        req.body;
+    let {
+        firstName,
+        middleName,
+        lastName,
+        email,
+        password,
+        contactNo,
+        dateOfBirth,
+        age,
+        gender,
+        address,
+        isAlive,
+    } = req.body;
 
     if (
-        !name ||
+        !firstName ||
+        !middleName ||
+        !lastName ||
         !email ||
         !password ||
         !contactNo ||
@@ -33,14 +46,16 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
 
     let uniqueId = await checkAndGenerateId(prisma);
 
-    name = changeLetterCase(name);
+    const name = changeLetterCase(firstName, middleName, lastName);
 
     const hashedPassword = await hashPassword(password);
     try {
         const patient = await prisma.patient.create({
             data: {
                 id: `P${uniqueId}`,
-                name,
+                firstName: name.firstName,
+                middleName: name.middleName,
+                lastName: name.lastName,
                 email,
                 password: hashedPassword,
                 contactNo,
@@ -68,11 +83,23 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
 });
 
 exports.adminDoctorSignUp = BigPromise(async (req, res, next) => {
-    let { name, email, password, contactNo, qualification, address, gender, age } =
-        req.body;
+    let {
+        firstName,
+        middleName,
+        lastName,
+        email,
+        password,
+        contactNo,
+        qualification,
+        address,
+        gender,
+        age,
+    } = req.body;
 
     if (
-        !name ||
+        !firstName ||
+        !middleName ||
+        !lastName ||
         !email ||
         !password ||
         !contactNo ||
@@ -89,7 +116,7 @@ exports.adminDoctorSignUp = BigPromise(async (req, res, next) => {
         );
     }
 
-    name = changeLetterCase(name);
+    const name = changeLetterCase(firstName, middleName, lastName);
 
     let uniqueId = await checkAndGenerateId(prisma);
 
@@ -99,7 +126,9 @@ exports.adminDoctorSignUp = BigPromise(async (req, res, next) => {
         const doctor = await prisma.doctor.create({
             data: {
                 id: `D${uniqueId}`,
-                name,
+                firstName: name.firstName,
+                middleName: name.middleName,
+                lastName: name.lastName,
                 email,
                 password: hashedPassword,
                 contactNo,
@@ -138,7 +167,13 @@ exports.adminHospitalSignUp = BigPromise(async (req, res, next) => {
         );
     }
 
-    name = changeLetterCase(name);
+    const namedArray = name.split(" ");
+    for (let i = 0; i < namedArray.length; i++) {
+        const changedCaseName =
+            namedArray[i].charAt(0).toUpperCase() + namedArray[i].slice(1);
+        namedArray[i] = changedCaseName;
+    }
+    name = namedArray.join(" ");
 
     let uniqueId = await checkAndGenerateId(prisma);
 
@@ -174,8 +209,8 @@ exports.adminHospitalSignUp = BigPromise(async (req, res, next) => {
 });
 
 exports.adminSignup = BigPromise(async (req, res, next) => {
-    let { email, name, password, contactNo } = req.body;
-    if (!email || !name || !password || !contactNo) {
+    let { email, firstName, middleName, lastName, password, contactNo } = req.body;
+    if (!email || !firstName || !middleName || !lastName || !password || !contactNo) {
         return next(
             res.status(400).json({
                 success: false,
@@ -184,14 +219,17 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
         );
     }
 
-    name = changeLetterCase(name);
+    const name = changeLetterCase(firstName, middleName, lastName);
+
     const hashedPassword = await hashPassword(password);
 
     try {
         const admin = await prisma.admin.create({
             data: {
                 email,
-                name,
+                firstName: name.firstName,
+                middleName: name.middleName,
+                lastName: name.lastName,
                 password: hashedPassword,
                 contactNo,
             },
