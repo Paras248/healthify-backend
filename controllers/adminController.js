@@ -222,14 +222,17 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
     const name = changeLetterCase(firstName, middleName, lastName);
     console.table(name);
     const hashedPassword = await hashPassword(password);
+    firstName = name.firstName;
+    middleName = name.middleName;
+    lastName = name.lastName;
 
     try {
         const admin = await prisma.admin.create({
             data: {
                 email,
-                firstName: name.firstName,
-                middleName: name.middleName,
-                lastName: name.lastName,
+                firstName,
+                middleName,
+                lastName,
                 password: hashedPassword,
                 contactNo,
             },
