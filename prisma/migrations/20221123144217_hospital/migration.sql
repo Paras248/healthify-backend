@@ -1,7 +1,9 @@
 -- CreateTable
 CREATE TABLE "Patient" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "contactNo" TEXT[],
@@ -19,7 +21,9 @@ CREATE TABLE "Patient" (
 -- CreateTable
 CREATE TABLE "Doctor" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "contactNo" TEXT[],
@@ -36,7 +40,9 @@ CREATE TABLE "Doctor" (
 -- CreateTable
 CREATE TABLE "Hospital" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "address" TEXT NOT NULL,
@@ -52,7 +58,7 @@ CREATE TABLE "Hospital" (
 CREATE TABLE "Records" (
     "id" TEXT NOT NULL,
     "medicines" TEXT[],
-    "disease" TEXT NOT NULL,
+    "diagnosis" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "doctorId" TEXT NOT NULL,
     "hospitalId" TEXT NOT NULL,
@@ -67,14 +73,16 @@ CREATE TABLE "Admin" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
     "contactNo" TEXT[],
 
     CONSTRAINT "Admin_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Patient_name_email_contactNo_key" ON "Patient"("name", "email", "contactNo");
+CREATE UNIQUE INDEX "Patient_firstName_middleName_lastName_email_contactNo_key" ON "Patient"("firstName", "middleName", "lastName", "email", "contactNo");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Doctor_email_key" ON "Doctor"("email");

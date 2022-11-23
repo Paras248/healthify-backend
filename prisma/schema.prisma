@@ -13,7 +13,9 @@ datasource db {
 // patient -> checkedBy <- Doctor --many to many 
 model Patient {
   id          String    @id
-  name        String
+  firstName   String
+  middleName  String
+  lastName    String
   email       String
   password    String
   contactNo   String[]
@@ -26,12 +28,14 @@ model Patient {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
 
-  @@unique([name, email, contactNo])
+  @@unique([firstName, middleName, lastName, email, contactNo])
 }
 
 model Doctor {
   id            String    @id
-  name          String
+  firstName     String
+  middleName    String
+  lastName      String
   email         String    @unique
   password      String
   contactNo     String[]
@@ -46,23 +50,25 @@ model Doctor {
 
 // Patient -> visits <- Hospital -- many to many
 model Hospital {
-  id        String    @id
-  name      String
-  email     String    @unique
-  password  String
-  address   String
-  contactNo String[]
-  type      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now())
-  records   Records[]
+  id         String    @id
+  firstName  String
+  middleName String
+  lastName   String
+  email      String    @unique
+  password   String
+  address    String
+  contactNo  String[]
+  type       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @default(now())
+  records    Records[]
 }
 
 // patient has records -- one to many, hospital has records
 model Records {
   id          String   @id @default(cuid())
   medicines   String[]
-  disease     String
+  diagnosis   String
   description String
   doctorId    String
   hospitalId  String
@@ -75,9 +81,11 @@ model Records {
 
 // a seprate user 
 model Admin {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String
-  contactNo String[]
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  firstName  String
+  middleName String
+  lastName   String
+  contactNo  String[]
 }
