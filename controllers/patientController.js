@@ -80,7 +80,9 @@ exports.patientGetDetails = BigPromise(async (req, res, next) => {
 
     const patientObject = {
         id: patient.id,
-        name: patient.name,
+        firstName: patient.firstName,
+        middleName: patient.middleName,
+        lastName: patient.lastName,
         email: patient.email,
         contactNo: patient.contactNo,
         dateOfBirth: patient.dateOfBirth,

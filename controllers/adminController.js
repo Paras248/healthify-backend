@@ -220,7 +220,7 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
     }
 
     const name = changeLetterCase(firstName, middleName, lastName);
-
+    console.table(name);
     const hashedPassword = await hashPassword(password);
 
     try {
@@ -242,7 +242,6 @@ exports.adminSignup = BigPromise(async (req, res, next) => {
             admin,
         });
     } catch (err) {
-        console.log(err);
         return next(
             res.status(400).json({
                 success: false,
