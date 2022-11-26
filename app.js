@@ -9,7 +9,10 @@ const patient = require("./routes/patient");
 const doctor = require("./routes/doctor");
 const hospital = require("./routes/hospital");
 
-app.use(cors());
+app.use(cors({
+	credentials: true,
+	origin: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
