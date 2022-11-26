@@ -11,7 +11,8 @@ const hospital = require("./routes/hospital");
 
 app.use(cors({
 	credentials: true,
-	origin: true
+	origin: true,
+	exposedHeaders: ["set-cookie"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
