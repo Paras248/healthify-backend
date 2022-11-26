@@ -12,11 +12,12 @@ const hospital = require("./routes/hospital");
 app.use(cors({
 	credentials: true,
 	origin: true,
-	exposedHeaders: ["set-cookie"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser({
+	sameSite: "none"
+}));
 
 app.use("/api", patient);
 app.use("/api", admin);
