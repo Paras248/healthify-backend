@@ -1,12 +1,10 @@
 const BigPromise = require("../middlewares/BigPromise");
 const { hashPassword } = require("../utils/authUtil");
 const cookieToken = require("../utils/cookieToken");
-const { PrismaClient } = require("@prisma/client");
+const prisma = require("../utils/prismaClient");
 const changeLetterCase = require("../utils/changeLetterCase");
 const checkAndGenerateId = require("../utils/checkAndGenerateId");
 const { comparePassword } = require("../utils/authUtil");
-
-const prisma = new PrismaClient();
 
 exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
     let {

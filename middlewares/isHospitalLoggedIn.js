@@ -1,9 +1,8 @@
 const BigPromise = require("./BigPromise");
-const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
+const prisma = require("../utils/prismaClient");
 
 const isHospitalLoggedIn = BigPromise(async (req, res, next) => {
-    const prisma = new PrismaClient();
     const token =
         req.cookies.hospitalToken ||
         req.headers["Authorization"] ||

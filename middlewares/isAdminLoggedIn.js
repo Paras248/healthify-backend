@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
 const BigPromise = require("./BigPromise");
-const { PrismaClient } = require("@prisma/client");
+const prisma = require("../utils/prismaClient");
 
 const isAdminLoggedIn = BigPromise(async (req, res, next) => {
-    const prisma = new PrismaClient();
     const token =
         req.cookies.adminToken ||
         req.headers["Authorization"] ||
