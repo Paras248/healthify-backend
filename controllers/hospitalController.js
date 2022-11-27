@@ -45,10 +45,10 @@ exports.hospitalSignIn = BigPromise(async (req, res, next) => {
 });
 
 exports.patientAddRecord = BigPromise(async (req, res, next) => {
-    const { patientId, doctorId, medicines, disease, description } = req.body;
+    const { patientId, doctorId, medicines, diagnosis, description } = req.body;
     const hospitalId = req.hospital.id;
 
-    if (!patientId || !doctorId || !medicines || !disease || !description) {
+    if (!patientId || !doctorId || !medicines || !diagnosis || !description) {
         return next(
             res.status(400).json({
                 success: false,
@@ -61,7 +61,7 @@ exports.patientAddRecord = BigPromise(async (req, res, next) => {
         const record = await prisma.records.create({
             data: {
                 medicines,
-                disease,
+                diagnosis,
                 description,
                 patientId,
                 doctorId,
@@ -84,13 +84,13 @@ exports.patientAddRecord = BigPromise(async (req, res, next) => {
     } catch (err) {
         res.status(400).json({
             success: false,
-            message: "hospital id or patient id or hospital id is incorrect",
+            message: "hospital id or patient id or Doctor id is incorrect",
         });
     }
 });
 
 exports.hospitalSearchPatient = BigPromise(async (req, res, next) => {
-    const patientId = req.body.patientId;
+    const patientId = req.query.patientId;
 
     if (!patientId) {
         return next(
