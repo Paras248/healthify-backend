@@ -21,6 +21,7 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
         isAlive,
     } = req.body;
 
+
     if (
         !firstName ||
         !middleName ||
@@ -71,6 +72,7 @@ exports.adminPatientSignUp = BigPromise(async (req, res, next) => {
             patient,
         });
     } catch (err) {
+        console.log(err)
         return next(
             res.status(400).json({
                 success: false,
